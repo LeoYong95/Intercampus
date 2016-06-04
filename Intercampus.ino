@@ -1,42 +1,52 @@
+/* Babybot code for intercampus technical team
+ * 
+ *The following code is run on Arduino nano
+ *The code function is to obtain data from serial communication via Bluetooth
+ *and interpret the data to control 2 DC motor and a Servo
+ */
+
 #include <Servo.h>
+
+//--------Declare objects
 Servo srv;
-int leftledPin = 3;
-int rightledPin = 6;
+int leftMotorPin = 3;
+int rightMotorPin = 6;
 int forwardledPin = 7;
 String readString;
 
-
+//-------------Setup Void
 void setup() {
   Serial.begin(9600);
   srv.attach(5);
-  pinMode(leftledPin, OUTPUT);
-  pinMode(rightledPin, OUTPUT);
+  pinMode(leftMotorPin, OUTPUT);
+  pinMode(rightMotorPin, OUTPUT);
   pinMode(forwardledPin, OUTPUT);
 
 }
 
+//-----------Loop Void
 void loop() {
-  
+  //--------------------------Read Serial
   while (Serial.available()) {
     delay(3);
     char c = Serial.read();
     readString += c;
   }
-  
+  //---------------------------Execute Command
   if (readString.length() >0) {
     Serial.println(readString);
 
-    if(readString == "left"){
-      digitalWrite(leftledPin,HIGH);
-    }else if(readString == "right"){
-      digitalWrite(rightledPin,HIGH);
-    }else if(readString == "forward"){
+    if(readString == "lon"){
+      digitalWrite(leftMotorPin,HIGH);
+    }else if(readString == "ron"){
+      digitalWrite(rightMotorPin,HIGH);
+    }else if(readString == "fon"){
       digitalWrite(forwardledPin,HIGH);
-    }else if(readString == "leftoff"){
-      digitalWrite(leftledPin,LOW);
-    }else if(readString == "rightoff"){
-      digitalWrite(rightledPin,LOW);
-    }else if(readString == "forwardoff"){
+    }else if(readString == "lof"){
+      digitalWrite(leftMotorPin,LOW);
+    }else if(readString == "rof"){
+      digitalWrite(rightMotorPin,LOW);
+    }else if(readString == "fof"){
       digitalWrite(forwardledPin,LOW);
     }
 
